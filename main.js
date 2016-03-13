@@ -1,12 +1,24 @@
+/*
+ebay Country Filter
+
+Attempts to clear up unwanted items in your ebay search results
+by hiding items being sold from certain countries
+
+A work in progress
+
+Todo: 
+	Clean up debugging text
+	Switch from prompt to textbox in filter div
+	Add proper userscript heading
+	Support for languages other than English? 
+	Sooooooo much more
+*/
+
 (function(){
 //localStorage.setItem("ecfCountriesList", null);
 var totalHidden = 0;
 var countriesList = JSON.parse(localStorage.getItem("ecfCountriesList"));
 var enabled = localStorage.getItem("ecfEnabled");
-
-console.log("before")
-console.log(countriesList);
-console.log(enabled);
 
 //if getItem returns null then this is the first time the script it being used
 if(countriesList === null){
@@ -66,7 +78,6 @@ $("#ecf_add").on("click", function(){
 
 	addCountry(val);
 
-	console.log("JDSLKFJDSLKF");
 	$("#ecf_countries_list").append(" \
 		<div class='cbx'> \
 			<span class=''> \

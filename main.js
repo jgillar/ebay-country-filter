@@ -15,6 +15,10 @@ Todo:
 */
 
 (function(){
+
+//print various debugging info, slightly more convienient than using the console sometimes
+var DEBUGON = true; 
+
 //localStorage.setItem("ecfCountriesList", null);
 var totalHidden = 0;
 var countriesList = JSON.parse(localStorage.getItem("ecfCountriesList"));
@@ -29,9 +33,10 @@ if(enabled === null){
 	localStorage.setItem("ecfEnabled", false);
 }
 
-console.log("\nafter");
-console.log(countriesList);
-console.log(enabled);
+if(DEBUGON){
+	console.log(countriesList);
+	console.log(enabled);
+}
 
 //insert the markup into the sidebar with the other default filters
 //the html here is complicated mostly because I wanted to keep the same aesthetics
@@ -93,7 +98,6 @@ var addCountry = function(country){
 	console.log(countriesList);
 
 	localStorage.setItem("ecfCountriesList", JSON.stringify(countriesList));
-	console.log("HEYEEEEEEY" + localStorage.getItem("ecfCountriesList"));
 };
 
 $("#Results").on("click", ".ecf_expander", function(){
@@ -113,8 +117,11 @@ $("#ecf_enable").on("click", function(){
 	}
 });
 
+//go through each item div on the page and hide it if it's from an unwanted country
 $(".lvresult ").each(function(index,obj){
-	return false;
+	//this DOES work but it is more convieient to skip hiding things for now
+	//since it takes awhile and I'm working more on the countries list first
+	return false; 
 
 	var locText = obj.textContent.trim();
 	var regex = new RegExp("/(?:From )(?:China|Hong Kong)/i");
@@ -126,11 +133,12 @@ $(".lvresult ").each(function(index,obj){
 		totalHidden++;
 	}
 
-console.log("\n");
-
 });
 
-console.log("Total Hidden: " + totalHidden + "\n");
+if(DEBUGON){
+	console.log("Total Hidden: " + totalHidden + "\n");
+}
+
 
 var sheet = (function() {
 

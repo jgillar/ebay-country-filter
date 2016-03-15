@@ -102,7 +102,10 @@ Todo:
 	//adds country to master list
 	var addCountry = function(country) {
 		countriesList.push(country.trim());
-		console.log(countriesList);
+		
+		if(DEBUGON){
+			console.log(countriesList);
+		}
 
 		localStorage.setItem("ecfCountriesList", JSON.stringify(countriesList));
 	};
@@ -145,12 +148,8 @@ Todo:
 
 	//go through each item div on the page and hide it if it's from an unwanted country
 	$(".lvresult ").each(function(index, obj) {
-		//this DOES work but it is more convieient to skip hiding things for now
-		//since it takes awhile and I'm working more on the countries list first
-		return false;
-
 		var locText = obj.textContent.trim();
-		var regex = new RegExp("/(?:From )(?:China|Hong Kong)/i");
+		var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
 
 		if (regex.test(locText)) {
 			//add wrapper and expand button

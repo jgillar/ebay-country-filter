@@ -21,23 +21,32 @@ var DEBUGON = true;
 
 //localStorage.setItem("ecfCountriesList", null);
 var totalHidden = 0;
+
 var countriesList = JSON.parse(localStorage.getItem("ecfCountriesList"));
-var enabled = localStorage.getItem("ecfEnabled");
+
+//localstorage ecfEnabled is a STRING. Need to convert it to a boolean
+var enabled = (localStorage.getItem("ecfEnabled") === "true");
+
+if(DEBUGON){
+	console.log("\ninitial storage values");
+	console.log("ecfEnabled: " + enabled);
+	console.log("ecfCountriesList:" + countriesList);
+}
 
 //if getItem returns null then this is the first time the script it being used
 if(countriesList === null){
 	countriesList = [];
 }
-if(enabled === null){
-	enabled = false;
-	localStorage.setItem("ecfEnabled", false);
-}
 
 if(DEBUGON){
-	console.log(countriesList);
-	console.log(enabled);
+	console.log("\nafter storage values");
+	console.log("ecfEnabled: " + enabled);
+	console.log("ecfCountriesList:" + countriesList);
 }
 
+console.log("enabled" + enabled);
+console.log("(enabled ? \"checked\" : \"\")");
+console.log((enabled ? "checked" : ""));
 //insert the markup into the sidebar with the other default filters
 //the html here is complicated mostly because I wanted to keep the same aesthetics
 //as the rest of the page
@@ -60,20 +69,21 @@ var enableText = "\
 	</div> \
 	";
 
-enableText += "\
-	<div id='ecf_countries'> \
-	<div class='asp asp-left-nav'> \
-	<div class='pnl-h'> \
-	<h3>Country Filter - List</h3>\
-	<div class='pnl-b pad-bottom'>\
-	<div id='ecf_countries_list'></div> \
-	<a id='ecf_add'>Add New Country</a> \
-	</div> \
-	</div> \
-	</div> \
-	</div> \
-	</div> \
-	";
+	enableText += "\
+		<div id='ecf_countries' style='display:" + (enabled ? "block" : "none") +"'> \
+		<div class='asp asp-left-nav'> \
+		<div class='pnl-h'> \
+		<h3>Country Filter - List</h3>\
+		<div class='pnl-b pad-bottom'>\
+		<div id='ecf_countries_list'></div> \
+		<a id='ecf_add'>Add New Country</a> \
+		</div> \
+		</div> \
+		</div> \
+		</div> \
+		</div> \
+		";
+
 
 $(".lct-lnks").eq(0).after(enableText);
 
@@ -108,13 +118,20 @@ $("#ecf_enable").on("click", function(){
 	if(enabled == true){
 		enabled = false;
 		localStorage.setItem("ecfEnabled", false);
+		$("#ecf_countries").hide();
 		//hide the country filter - list div
 	}
 	else{
 		enabled = true;
 		localStorage.setItem("ecfEnabled", true);
+		$("#ecf_countries").show();
 		//show the country filter - list div
 	}
+
+	if(DEBUGON){
+		console.log("ecfEnabled: " + localStorage.getItem("ecfEnabled"));
+	}
+
 });
 
 //go through each item div on the page and hide it if it's from an unwanted country

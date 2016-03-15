@@ -2,7 +2,7 @@
 // @name         ebay Country Filter
 // @namespace    https://greasyfork.org/
 // @version      0.1
-// @description  try to take over the world!
+// @description  Attempts to clear up unwanted items in your ebay search results
 // @author       Schabernack
 // @match        http://www.ebay.com/sch/i.html*
 // @grant        none

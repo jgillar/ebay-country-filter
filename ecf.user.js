@@ -156,19 +156,20 @@ Todo:
 
 	});
 
-	//go through each item div on the page and hide it if it's from an unwanted country
-	$(".lvresult ").each(function(index, obj) {
-		var locText = obj.textContent.trim();
-		var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
+	if(enabled){
+		//go through each item div on the page and hide it if it's from an unwanted country
+		$(".lvresult ").each(function(index, obj) {
+			var locText = obj.textContent.trim();
+			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
 
-		if (regex.test(locText)) {
-			//add wrapper and expand button
-			obj.innerHTML = "<div class='ecf_expander'>[+] Hidden - Click to expand</div><div class='ecf_wrapper'>" + obj.innerHTML + "</div>";
-			$(this).addClass("ecf_hidden");
-			totalHidden++;
-		}
-
-	});
+			if (regex.test(locText)) {
+				//add wrapper and expand button
+				obj.innerHTML = "<div class='ecf_expander'>[+] Hidden - Click to expand</div><div class='ecf_wrapper'>" + obj.innerHTML + "</div>";
+				$(this).addClass("ecf_hidden");
+				totalHidden++;
+			}
+		});
+	}
 
 	if (DEBUGON) {
 		console.log("Total Hidden: " + totalHidden + "\n");

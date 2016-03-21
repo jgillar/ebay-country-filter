@@ -5,8 +5,8 @@
 // @description  Attempts to clear up unwanted items in your ebay search results
 // @author       Schabernack
 // @match        http://www.ebay.com/sch/i.html*
-// @downloadURL	 https://raw.githubusercontent.com/jgillar/ebay-country-filter/master/ecf.user.js	
-// @updateURL    https://raw.githubusercontent.com/jgillar/ebay-country-filter/master/ecf.user.js
+// @updateURL	 https://raw.githubusercontent.com/jgillar/ebay-country-filter/master/ecf.meta.js	
+// @downloadURL  https://raw.githubusercontent.com/jgillar/ebay-country-filter/master/ecf.user.js
 // @grant        none
 // ==/UserScript==
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ebay Country Filter
 // @namespace    https://greasyfork.org/
-// @version      0.1
+// @version      0.2
 // @description  Attempts to clear up unwanted items in your ebay search results
 // @author       Schabernack
 // @match        http://www.ebay.com/sch/i.html*
@@ -23,6 +23,7 @@ Todo:
 	Support for languages other than English? 
 	Sooooooo much more
 */
+
 (function() {
 
 	//print various debugging info, slightly more convienient than using the console sometimes
@@ -120,13 +121,24 @@ Todo:
 		localStorage.setItem("ecfCountriesList", JSON.stringify(countriesList));
 	};
 
+	var removeCountry = function(country) {
+		var index = countriesList.indexOf(country);
+		countriesList.splice(index, 1);
+		
+		if(DEBUGON){
+			console.log(countriesList);
+		}
+
+		localStorage.setItem("ecfCountriesList", JSON.stringify(countriesList));
+	}
+
 	//displays a given country on the page
 	function printCountry(country) {
 		var valStripped = country.replace(" ", "");
 		$("#ecf_countries_list").append(" \
 		<div class='cbx'> \
 			<span class=''> \
-				<input type='checkbox' name='ecf_" + valStripped + "' id='ecf_" + valStripped + "' value='" + country + "' class='cbx' checked> \
+				<input type='checkbox' name='ecf_" + valStripped + "' id='ecf_" + valStripped + "' value='" + country + "' class='cbx ecf_country_checkbox' checked> \
 				<label for='ecf_" + valStripped + "'><span class='cbx'>" + country + "</span></label> \
 			</span> \
 		</div> \
@@ -153,6 +165,20 @@ Todo:
 		if (DEBUGON) {
 			console.log("ecfEnabled: " + localStorage.getItem("ecfEnabled"));
 		}
+
+	});
+
+
+	$("#ecf_countries_list").on("click", ".ecf_country_checkbox", function(){
+		var country = $(this).val();
+
+		if(DEBUGON){
+			console.log(country);
+		}
+
+		removeCountry(country);
+
+		$(this).parent().parent().remove(); //structure: <div><span><input /> ...
 
 	});
 

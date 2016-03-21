@@ -83,7 +83,7 @@ Todo:
 
 	enableText += "\
 		<div id='ecf_countries' style='display:" + (enabled ? "block" : "none") + "'> \
-		<div class='asp asp-left-nav'> \
+		<div class='asp'> \
 		<div class='pnl-h'> \
 		<h3>Country Filter - List</h3>\
 		<div class='pnl-b pad-bottom'>\
@@ -237,7 +237,7 @@ Todo:
 	sheet.addRule(".ecf_wrapper", "background: #333333; border: 5px solid brown; overflow: auto");
 	sheet.addRule(".ecf_expander", "cursor: pointer; height: 1.5em; line-height: 1.5em; color: #555; background-color: #fafafa; border: ");
 	sheet.addRule(".ecf_hidden .ecf_wrapper", "background: #cccccc; display: none;");
-	sheet.addRule(".ecf_controls", "background:brown; border:1px solid #333");
+	sheet.addRule("#ecf_controls", "margin-bottom:5px;");
 	sheet.addRule("#ecf_add", "display:block; margin-top: 6px");
 	sheet.addRule("#ecf_apply", "display:block; margin-top: 15px;color:#333333");
 	sheet.addRule("#ecf_apply input", "margin-right:5px;margin-top:-2px");

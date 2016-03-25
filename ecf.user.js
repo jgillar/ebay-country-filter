@@ -38,9 +38,10 @@ Todo:
 
 	if (DEBUGON) {
 		console.log("\ninitial storage values");
-		console.log("ecfEnabled: " + enabled);
-		console.log("ecfCountriesList:" + countriesList);
+		console.log("ecfEnabled: ", enabled);
+		console.log("ecfCountriesList:", countriesList);
 	}
+
 
 	//if getItem returns null then this is the first time the script it being used
 	if (countriesList === null) {
@@ -49,8 +50,8 @@ Todo:
 
 	if (DEBUGON) {
 		console.log("\nafter storage values");
-		console.log("ecfEnabled: " + enabled);
-		console.log("ecfCountriesList:" + countriesList);
+		console.log("ecfEnabled: ", enabled);
+		console.log("ecfCountriesList:", countriesList);
 	}
 
 	//insert the markup into the sidebar with the other default filters
@@ -104,21 +105,36 @@ Todo:
 	$("#ecf_add").on("click", function() {
 		var val = prompt("Enter country name");
 
-		addCountry(val);
-		printCountry(val);
+		//attempt to add country to list and display it if it's valid
+		if(addCountry(val)){
+			printCountry(val);
+		}
 	});
 
-	//adds country to master list
+	/*	
+	adds country to master list
+
+	@return true 	The country given is valid and could be added
+	@return false 	The country given is empty/spaces
+	*/
 	var addCountry = function(country) {
-		countriesList.push(country.trim());
+		country = country.trim();
 		
-		if(DEBUGON){
-			console.log(countriesList);
+		//if user entered an empty string or a bunch of spaces, ignore it
+		if (country === "") {
+			return false;
 		}
 
+		countriesList.push(country);
 		localStorage.setItem("ecfCountriesList", JSON.stringify(countriesList));
 
+		if(DEBUGON){
+			console.log("new country list: ", countriesList);
+		}
+
 		prefsChanged();
+
+		return true;
 	};
 
 	var removeCountry = function(country) {
@@ -197,8 +213,17 @@ Todo:
 	if(enabled){
 		//go through each item div on the page and hide it if it's from an unwanted country
 		$(".lvresult ").each(function(index, obj) {
+			var countriesListText = countriesList.join("|");
+			console.log("countriestListText: ", countriesListText);
+			//if the list of countries is empty or the user only added empty strings as countries
+			if(countriesListText === ""){
+				return false;
+			}
+
 			var locText = obj.textContent.trim();
 			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
+
+			console.log("regex: ", regex);
 
 			if (regex.test(locText)) {
 				//add wrapper and expand button

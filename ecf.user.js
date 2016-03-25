@@ -25,7 +25,6 @@ Todo:
 */
 
 (function() {
-
 	//print various debugging info, slightly more convienient than using the console sometimes
 	var DEBUGON = true;
 
@@ -54,49 +53,44 @@ Todo:
 		console.log("ecfCountriesList:" + countriesList);
 	}
 
-	console.log("enabled" + enabled);
-	console.log("(enabled ? \"checked\" : \"\")");
-	console.log((enabled ? "checked" : ""));
 	//insert the markup into the sidebar with the other default filters
 	//the html here is complicated mostly because I wanted to keep the same aesthetics
-	//as the rest of the page
-	var enableText = "\
-	<div id='ecf_controls'> \
-	<div class='asp asp-left-nav'> \
-	<div class='pnl-h'> \
-	<h3>Country Filter - Enable</h3>\
-	<div class='pnl-b pad-bottom'>\
-		<div class='cbx'> \
-			<span class=''> \
-				<input type='checkbox' name='ecf_enable' id='ecf_enable' value='enable' class='cbx' " + (enabled ? "checked" : "") + "> \
-				<label for='ecf_enable'><span class='cbx'>Enabled</span></label> \
-			</span> \
-		</div> \
-	</div> \
-	</div> \
-	</div> \
-	</div> \
-	</div> \
-	";
-
-	enableText += "\
-		<div id='ecf_countries' style='display:" + (enabled ? "block" : "none") + "'> \
-		<div class='asp'> \
-		<div class='pnl-h'> \
-		<h3>Country Filter - List</h3>\
-		<div class='pnl-b pad-bottom'>\
-		<div id='ecf_countries_list'></div> \
-		<div class='cbx'><span class='cbx'> \
-		<a id='ecf_add'>Add New Country</a> \
-		</span></div> \
-		<a id='ecf_apply'><input class='sprBtnSRP1 submit' type='button'> \
-		<span>Apply Changes<span></a>\
-		</div> \
-		</div> \
-		</div> \
-		</div> \
-		</div> \
-		";
+	//and structure as the rest of the page
+	//important so this plays nicely with other ebay userscripts
+	var enableText = `
+	<div id='ecf_controls'> 
+		<div class='asp asp-left-nav'> 
+			<div class='pnl-h'> 
+				<h3>Country Filter - Enable</h3>
+				<div class='pnl-b pad-bottom'>
+					<div class='cbx'> 
+						<span> 
+							<input type='checkbox' name='ecf_enable' id='ecf_enable' 
+								value='enable' class='cbx' ${enabled ? "checked" : ""}> 
+							<label for='ecf_enable'><span class='cbx'>Enabled</span></label> 
+						</span> 
+					</div> 
+				</div> 
+			</div> 
+		</div> 
+	</div> 
+	<div id='ecf_countries' style='display: ${enabled ? "block" : "none"}'> 
+		<div class='asp'> 
+			<div class='pnl-h'> 
+				<h3>Country Filter - List</h3>
+				<div class='pnl-b pad-bottom'>
+					<div id='ecf_countries_list'></div> 
+					<div class='cbx'>
+						<span class='cbx'> 
+							<a id='ecf_add'>Add New Country</a> 
+						</span>
+					</div>
+					<a id='ecf_apply'><input class='sprBtnSRP1 submit' type='button'>
+					<span>Apply Changes<span></a>
+				</div>
+			</div>
+		</div> 
+	</div>`;
 
 
 	$(".lct-lnks").eq(0).after(enableText);
@@ -156,7 +150,7 @@ Todo:
 	//if the user makes any changes (enable/disable, add/rem country, etc.) 
 	//alert the user they need to refresh to see the changes
 	function prefsChanged(){
-		prefsChanged
+		//finish this later
 	}	
 
 	$("#Results").on("click", ".ecf_expander", function() {

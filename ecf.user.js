@@ -7,7 +7,6 @@
 // @match        http://www.ebay.com/sch/i.html*
 // @grant        none
 // ==/UserScript==
-
 /*
 ebay Country Filter
 
@@ -20,7 +19,6 @@ Todo:
 	Support for languages other than English? 
 	Sooooooo much more
 */
-
 (function() {
 	//print various debugging info, slightly more convienient than using the console sometimes
 	var DEBUGON = true;
@@ -104,20 +102,20 @@ Todo:
 		var val = prompt("Enter country name");
 
 		//attempt to add country to list and display it if it's valid
-		if(addCountry(val)){
+		if (addCountry(val)) {
 			printCountry(val);
 		}
 	});
 
 	/*	
-	adds country to master list
+	adds country to master list and updates local storage
 
 	@return true 	The country given is valid and could be added
 	@return false 	The country given is empty/spaces
 	*/
 	var addCountry = function(country) {
 		country = country.trim();
-		
+
 		//if user entered an empty string or a bunch of spaces, ignore it
 		if (country === "") {
 			return false;
@@ -126,25 +124,30 @@ Todo:
 		countriesList.push(country);
 		localStorage.setItem("ecfCountriesList", JSON.stringify(countriesList));
 
-		if(DEBUGON){
+		if (DEBUGON) {
 			console.log("new country list: ", countriesList);
 		}
 
 		return true;
 	};
 
+	/*
+	removes country from master list and updates local storage
+	*/
 	var removeCountry = function(country) {
 		var index = countriesList.indexOf(country);
 		countriesList.splice(index, 1);
-		
-		if(DEBUGON){
+
+		if (DEBUGON) {
 			console.log("new country list: ", countriesList);
 		}
 
 		localStorage.setItem("ecfCountriesList", JSON.stringify(countriesList));
 	}
 
-	//displays a given country on the page
+	/* 
+	displays a given country in a checkbox on the page
+	*/
 	function printCountry(country) {
 		var valStripped = country.replace(" ", "");
 		$("#ecf_countries_list").append(`
@@ -154,15 +157,24 @@ Todo:
 					id='ecf_${valStripped}' value='${country}' 
 					class='cbx ecf_country_checkbox' checked />
 				<label for='ecf_${valStripped}"'>
-					<span class='cbx'>${country}</span></label>
+					<span class='cbx'>${country}</span>
+				</label>
 			</span>
 		</div>`);
 	}
 
+	/* 
+	clicking on a filtered item will show/hide it
+	*/
 	$("#Results").on("click", ".ecf_expander", function() {
 		$(this).next().slideToggle(550, "swing");
 	});
 
+	/*
+	checking enable checkbox will show the list of countries div
+	unchecking it will hide it
+	also updates local storage
+	*/
 	$("#ecf_enable").on("click", function() {
 		if (enabled == true) {
 			enabled = false;
@@ -182,15 +194,21 @@ Todo:
 
 	});
 
-	$("#ecf_apply").on("click", function(){
+	/*
+	reload the page so the user's settings will take effect
+	*/
+	$("#ecf_apply").on("click", function() {
 		location.reload();
 	});
 
-
-	$("#ecf_countries_list").on("click", ".ecf_country_checkbox", function(){
+	/*
+	unchecking a country checkbox will remove that country from the master list
+	the checkbox will also get removed from the page as well
+	*/
+	$("#ecf_countries_list").on("click", ".ecf_country_checkbox", function() {
 		var country = $(this).val();
 
-		if(DEBUGON){
+		if (DEBUGON) {
 			console.log(country);
 		}
 
@@ -200,28 +218,27 @@ Todo:
 
 	});
 
-	if(enabled){
-		//go through each item div on the page and hide it if it's from an unwanted country
-		$(".lvresult ").each(function(index, obj) {
-			var countriesListText = countriesList.join("|");
-			console.log("countriestListText: ", countriesListText);
-			//if the list of countries is empty or the user only added empty strings as countries
-			if(countriesListText === ""){
-				return false;
-			}
 
-			var locText = obj.textContent.trim();
+	if (enabled) {
+		var countriesListText = countriesList.join("|");
+
+		//if the list of countries is empty or the user only added empty strings as countries
+		if (countriesListText !== "") {
 			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
 
-			console.log("regex: ", regex);
+			//go through each item div on the page and hide it if it's from an unwanted country
+			$(".lvresult ").each(function(index, obj) {
+				//the "From: <country> text"
+				var locText = obj.textContent.trim();
 
-			if (regex.test(locText)) {
-				//add wrapper and expand button
-				obj.innerHTML = "<div class='ecf_expander'>[+] Hidden - Click to expand</div><div class='ecf_wrapper'>" + obj.innerHTML + "</div>";
-				$(this).addClass("ecf_hidden");
-				totalHidden++;
-			}
-		});
+				if (regex.test(locText)) {
+					//add wrapper and expand button
+					obj.innerHTML = "<div class='ecf_expander'>[+] Hidden - Click to expand</div><div class='ecf_wrapper'>" + obj.innerHTML + "</div>";
+					$(this).addClass("ecf_hidden");
+					totalHidden++;
+				}
+			});
+		}
 	}
 
 	if (DEBUGON) {

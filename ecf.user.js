@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ebay Country Filter
 // @namespace    https://greasyfork.org/
-// @version      0.2.5
+// @version      0.3
 // @description  Attempts to clear up unwanted items in your ebay search results
 // @author       Schabernack
 // @match        http://www.ebay.com/sch/i.html*
@@ -23,7 +23,6 @@ Todo:
 	//print various debugging info, slightly more convienient than using the console sometimes
 	var DEBUGON = true;
 
-	//localStorage.setItem("ecfCountriesList", null);
 	var totalHidden = 0;
 
 	var countriesList = JSON.parse(localStorage.getItem("ecfCountriesList"));
@@ -98,14 +97,44 @@ Todo:
 		});
 	}
 
-	$("#ecf_add").on("click", function() {
-		var val = prompt("Enter country name");
 
-		//attempt to add country to list and display it if it's valid
-		if (addCountry(val)) {
-			printCountry(val);
+	if (enabled) {
+		var countriesListText = countriesList.join("|");
+
+		//if the list of countries is empty or the user only added empty strings as countries
+		if (countriesListText !== "") {
+			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
+
+			//go through each item div on the page and hide it if it's from an unwanted country
+			$(".lvresult ").each(function(index, obj) {
+				//the "From: <country> text"
+				var locText = obj.textContent.trim();
+
+				if (regex.test(locText)) {
+					//add wrapper and expand button
+					obj.innerHTML = "<div class='ecf_expander'>[+] Hidden - Click to expand</div><div class='ecf_wrapper'>" + obj.innerHTML + "</div>";
+
+					$(this).addClass("ecf_hidden");
+					
+					totalHidden++;
+				}
+			});
 		}
-	});
+	}
+
+	if (DEBUGON) {
+		console.log("Total Hidden: " + totalHidden + "\n");
+	}
+
+	//To do: display the total items hidden somewhere
+	//maybe underneath the total found? or with the rest of the userscripts controls?
+
+	stylesheetInit();
+
+
+
+
+	/* *** Functions and events *** */
 
 	/*	
 	adds country to master list and updates local storage
@@ -163,6 +192,18 @@ Todo:
 		</div>`);
 	}
 
+	/*
+	clicking on the "Add Country" link will prompt the user for a country 
+	*/
+	$("#ecf_add").on("click", function() {
+		var val = prompt("Enter country name");
+
+		//attempt to add country to list and display it if it's valid
+		if (addCountry(val)) {
+			printCountry(val);
+		}
+	});
+
 	/* 
 	clicking on a filtered item will show/hide it
 	*/
@@ -218,51 +259,28 @@ Todo:
 
 	});
 
+	/*
+	add a new stylesheet to the page and set it up with our styles
+	*/
+	function stylesheetInit(){
+		var sheet = (function() {
 
-	if (enabled) {
-		var countriesListText = countriesList.join("|");
+			var style = document.createElement("style");
 
-		//if the list of countries is empty or the user only added empty strings as countries
-		if (countriesListText !== "") {
-			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
+			//for webkit
+			style.appendChild(document.createTextNode(""));
 
-			//go through each item div on the page and hide it if it's from an unwanted country
-			$(".lvresult ").each(function(index, obj) {
-				//the "From: <country> text"
-				var locText = obj.textContent.trim();
+			document.head.appendChild(style);
 
-				if (regex.test(locText)) {
-					//add wrapper and expand button
-					obj.innerHTML = "<div class='ecf_expander'>[+] Hidden - Click to expand</div><div class='ecf_wrapper'>" + obj.innerHTML + "</div>";
-					$(this).addClass("ecf_hidden");
-					totalHidden++;
-				}
-			});
-		}
+			return style.sheet;
+		})();
+
+		sheet.addRule(".ecf_wrapper", "background: #333333; border: 5px solid brown; overflow: auto");
+		sheet.addRule(".ecf_expander", "cursor: pointer; height: 1.5em; line-height: 1.5em; color: #555; background-color: #fafafa; border: ");
+		sheet.addRule(".ecf_hidden .ecf_wrapper", "background: #cccccc; display: none;");
+		sheet.addRule("#ecf_controls", "margin-bottom:5px;");
+		sheet.addRule("#ecf_add", "display:block; margin-top: 6px");
+		sheet.addRule("#ecf_apply", "display:block; margin-top: 15px;color:#333333");
+		sheet.addRule("#ecf_apply input", "margin-right:5px;margin-top:-2px");
 	}
-
-	if (DEBUGON) {
-		console.log("Total Hidden: " + totalHidden + "\n");
-	}
-
-
-	var sheet = (function() {
-
-		var style = document.createElement("style");
-
-		//for webkit
-		style.appendChild(document.createTextNode(""));
-
-		document.head.appendChild(style);
-
-		return style.sheet;
-	})();
-
-	sheet.addRule(".ecf_wrapper", "background: #333333; border: 5px solid brown; overflow: auto");
-	sheet.addRule(".ecf_expander", "cursor: pointer; height: 1.5em; line-height: 1.5em; color: #555; background-color: #fafafa; border: ");
-	sheet.addRule(".ecf_hidden .ecf_wrapper", "background: #cccccc; display: none;");
-	sheet.addRule("#ecf_controls", "margin-bottom:5px;");
-	sheet.addRule("#ecf_add", "display:block; margin-top: 6px");
-	sheet.addRule("#ecf_apply", "display:block; margin-top: 15px;color:#333333");
-	sheet.addRule("#ecf_apply input", "margin-right:5px;margin-top:-2px");
 })();

@@ -132,8 +132,6 @@ Todo:
 			console.log("new country list: ", countriesList);
 		}
 
-		prefsChanged();
-
 		return true;
 	};
 
@@ -146,8 +144,6 @@ Todo:
 		}
 
 		localStorage.setItem("ecfCountriesList", JSON.stringify(countriesList));
-
-		prefsChanged();
 	}
 
 	//displays a given country on the page
@@ -162,12 +158,6 @@ Todo:
 		</div> \
 		");
 	}
-
-	//if the user makes any changes (enable/disable, add/rem country, etc.) 
-	//alert the user they need to refresh to see the changes
-	function prefsChanged(){
-		//finish this later
-	}	
 
 	$("#Results").on("click", ".ecf_expander", function() {
 		$(this).next().slideToggle(550, "swing");

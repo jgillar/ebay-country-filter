@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ebay Country Filter
 // @namespace    https://greasyfork.org/
-// @version      0.2.4
+// @version      0.2.5
 // @description  Attempts to clear up unwanted items in your ebay search results
 // @author       Schabernack
 // @match        http://www.ebay.com/sch/i.html*
@@ -17,9 +17,6 @@ by hiding items being sold from certain countries
 A work in progress
 
 Todo: 
-	Clean up debugging text
-	Switch from prompt to textbox in filter div
-	Add proper userscript heading
 	Support for languages other than English? 
 	Sooooooo much more
 */
@@ -67,7 +64,7 @@ Todo:
 					<div class='cbx'> 
 						<span> 
 							<input type='checkbox' name='ecf_enable' id='ecf_enable' 
-								value='enable' class='cbx' ${enabled ? "checked" : ""}> 
+								value='enable' class='cbx' ${enabled ? "checked" : ""} /> 
 							<label for='ecf_enable'><span class='cbx'>Enabled</span></label> 
 						</span> 
 					</div> 
@@ -93,9 +90,10 @@ Todo:
 		</div> 
 	</div>`;
 
-
+	//insert the markup into the sidebar
 	$(".lct-lnks").eq(0).after(enableText);
 
+	//display the list of country list checkboxes
 	if (countriesList.length !== 0) {
 		countriesList.forEach(function(country) {
 			printCountry(country);
@@ -140,7 +138,7 @@ Todo:
 		countriesList.splice(index, 1);
 		
 		if(DEBUGON){
-			console.log(countriesList);
+			console.log("new country list: ", countriesList);
 		}
 
 		localStorage.setItem("ecfCountriesList", JSON.stringify(countriesList));
@@ -149,14 +147,16 @@ Todo:
 	//displays a given country on the page
 	function printCountry(country) {
 		var valStripped = country.replace(" ", "");
-		$("#ecf_countries_list").append(" \
-		<div class='cbx'> \
-			<span class=''> \
-				<input type='checkbox' name='ecf_" + valStripped + "' id='ecf_" + valStripped + "' value='" + country + "' class='cbx ecf_country_checkbox' checked> \
-				<label for='ecf_" + valStripped + "'><span class='cbx'>" + country + "</span></label> \
-			</span> \
-		</div> \
-		");
+		$("#ecf_countries_list").append(`
+		<div class='cbx'> 
+			<span> 
+				<input type='checkbox' name='ecf_${valStripped}' 
+					id='ecf_${valStripped}' value='${country}' 
+					class='cbx ecf_country_checkbox' checked />
+				<label for='ecf_${valStripped}"'>
+					<span class='cbx'>${country}</span></label>
+			</span>
+		</div>`);
 	}
 
 	$("#Results").on("click", ".ecf_expander", function() {

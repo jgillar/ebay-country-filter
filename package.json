@@ -1,0 +1,22 @@
+{
+  "name": "ebay-country-filter",
+  "version": "1.0.0",
+  "description": "Hides unwanted listings on ebay",
+  "main": "ecf.user.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgillar/ebay-country-filter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jgillar/ebay-country-filter/issues"
+  },
+  "homepage": "https://github.com/jgillar/ebay-country-filter#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}

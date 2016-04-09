@@ -4,12 +4,12 @@
 // @version      0.3
 // @description  Attempts to clear up unwanted items in your ebay search results
 // @author       Schabernack
-// @match        http://www.ebay.com/sch/i.html*
+// @match        http://www.ebay.com/sch/*
 // @grant        none
 // ==/UserScript==
 /*
 ebay Country Filter
-
+ 
 Attempts to clear up unwanted items in your ebay search results
 by hiding items being sold from certain countries
 

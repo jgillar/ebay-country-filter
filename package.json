@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/jgillar/ebay-country-filter#readme",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "browser-sync": "^2.11.2",
+    "gulp": "^3.9.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-remote-src": "^0.4.1",
+    "gulp-util": "^3.0.7"
   }
 }

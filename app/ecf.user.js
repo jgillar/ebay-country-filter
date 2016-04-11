@@ -17,6 +17,7 @@ A work in progress
 
 Todo: 
 	Support for languages other than English? 
+	Force layout into list view if in gallery view?
 	Sooooooo much more
 */
 (function() {
@@ -131,9 +132,6 @@ Todo:
 
 	stylesheetInit();
 
-
-
-
 	/* *** Functions and events *** */
 
 	/*	
@@ -216,7 +214,11 @@ Todo:
 	unchecking it will hide it
 	also updates local storage
 	*/
-	$("#ecf_enable").on("click", function() {
+	$(document).on("change", "#ecf_enable", function() {
+		if (DEBUGON) {
+			console.log("ecfEnabled: " + localStorage.getItem("ecfEnabled"));
+		}
+
 		if (enabled == true) {
 			enabled = false;
 			localStorage.setItem("ecfEnabled", false);
@@ -275,12 +277,12 @@ Todo:
 			return style.sheet;
 		})();
 
-		sheet.addRule(".ecf_wrapper", "background: #333333; border: 5px solid brown; overflow: auto");
-		sheet.addRule(".ecf_expander", "cursor: pointer; height: 1.5em; line-height: 1.5em; color: #555; background-color: #fafafa; border: ");
-		sheet.addRule(".ecf_hidden .ecf_wrapper", "background: #cccccc; display: none;");
-		sheet.addRule("#ecf_controls", "margin-bottom:5px;");
-		sheet.addRule("#ecf_add", "display:block; margin-top: 6px");
-		sheet.addRule("#ecf_apply", "display:block; margin-top: 15px;color:#333333");
-		sheet.addRule("#ecf_apply input", "margin-right:5px;margin-top:-2px");
+		sheet.insertRule(".ecf_wrapper { background: #333333; border: 5px solid brown; overflow: auto }", 0);
+		sheet.insertRule(".ecf_expander { cursor: pointer; height: 1.5em; line-height: 1.5em; color: #555; background-color: #fafafa;  }", 0);
+		sheet.insertRule(".ecf_hidden .ecf_wrapper { background: #cccccc; display: none; }", 0);
+		sheet.insertRule("#ecf_controls { margin-bottom:5px; }", 0);
+		sheet.insertRule("#ecf_add { display:block; margin-top: 6px; }", 0);
+		sheet.insertRule("#ecf_apply { display:block; margin-top: 15px;color:#333333; }", 0);
+		sheet.insertRule("#ecf_apply input { margin-right:5px;margin-top:-2px; }", 0);
 	}
 })();

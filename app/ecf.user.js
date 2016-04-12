@@ -184,7 +184,7 @@ Todo:
 				<input type='checkbox' name='ecf_${valStripped}' 
 					id='ecf_${valStripped}' value='${country}' 
 					class='cbx ecf_country_checkbox' checked />
-				<label for='ecf_${valStripped}"'>
+				<label for='ecf_${valStripped}'>
 					<span class='cbx'>${country}</span>
 				</label>
 			</span>

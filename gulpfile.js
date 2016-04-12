@@ -25,8 +25,7 @@ gulp.task("browser-sync", function(){
 		server: {
 			baseDir: "./",
 			index: "tests/index.html"
-		},
-		browser: "google chrome"
+		}
 	});
 });
 

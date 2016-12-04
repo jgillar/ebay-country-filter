@@ -90,7 +90,7 @@ Todo:
 	</div>`;
 
 	//insert the markup into the sidebar
-	$(".lct-lnks").eq(0).after(enableText);
+	$("#LeftNavCategoryContainer").after(enableText);
 
 	//display the list of country list checkboxes
 	if (countriesList.length !== 0) {

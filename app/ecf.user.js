@@ -91,7 +91,7 @@ Todo:
 	</div>`;
 
 	//insert the markup into the sidebar
-	$("#LeftNavCategoryContainer").after(enableText);
+	$(".srp-rail__left").eq(0).prepend(enableText);
 
 	//display the list of country list checkboxes
 	if (countriesList.length !== 0) {
@@ -108,8 +108,8 @@ Todo:
 		if (countriesListText !== "") {
 			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
 
-			//go through each item div on the page and hide it if it's from an unwanted country
-			$(".lvresult ").each(function(index, obj) {
+			//go through each item li on the page and hide it if it's from an unwanted country
+			$("li.s-item").each(function(index, obj) {
 				//the "From: <country> text"
 				var locText = obj.textContent.trim();
 
@@ -207,7 +207,7 @@ Todo:
 	/* 
 	clicking on a filtered item will show/hide it
 	*/
-	$("#Results").on("click", ".ecf_expander", function() {
+	$("#mainContent").on("click", ".ecf_expander", function() {
 		$(this).next().slideToggle(550, "swing");
 	});
 

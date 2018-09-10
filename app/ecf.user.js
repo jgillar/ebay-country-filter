@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ebay Country Filter
 // @namespace    https://greasyfork.org/
-// @version      0.4.2
+// @version      0.4.3
 // @description  Attempts to clear up unwanted items in your ebay search results
 // @author       Schabernack
 // @match        http://www.ebay.com/sch/*
@@ -83,15 +83,14 @@ Todo:
 							<a id='ecf_add'>Add New Country</a> 
 						</span>
 					</div>
-					<a id='ecf_apply'><input class='sprBtnSRP1 submit' type='button'>
-					<span>Apply Changes<span></a>
+					<a id='ecf_apply'><input class='submit-btn submit' type='button' value="Apply Changes"></a>
 				</div>
 			</div>
 		</div> 
 	</div>`;
 
 	//insert the markup into the sidebar
-	$(".srp-rail__left").eq(0).prepend(enableText);
+	$("#LeftNavContainer").prepend(enableText);
 
 	//display the list of country list checkboxes
 	if (countriesList.length !== 0) {
@@ -109,7 +108,7 @@ Todo:
 			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
 
 			//go through each item li on the page and hide it if it's from an unwanted country
-			$("li.s-item").each(function(index, obj) {
+			$("li.lvresult").each(function(index, obj) {
 				//the "From: <country> text"
 				var locText = obj.textContent.trim();
 
@@ -285,6 +284,6 @@ Todo:
 		sheet.insertRule("#ecf_controls { margin-bottom:5px; }", 0);
 		sheet.insertRule("#ecf_add { display:block; margin-top: 6px; }", 0);
 		sheet.insertRule("#ecf_apply { display:block; margin-top: 15px;color:#333333; }", 0);
-		sheet.insertRule("#ecf_apply input { margin-right:5px;margin-top:-2px; }", 0);
+		sheet.insertRule("#ecf_apply input { display:block; width:auto; }", 0);
 	}
 })();

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ebay Country Filter
 // @namespace    https://greasyfork.org/
-// @version      0.4.3
+// @version      0.4.31
 // @description  Attempts to clear up unwanted items in your ebay search results
 // @author       Schabernack
 // @match        http://www.ebay.com/sch/*
@@ -90,7 +90,7 @@ Todo:
 	</div>`;
 
 	//insert the markup into the sidebar
-	$("#LeftNavContainer").prepend(enableText);
+	$("#w3-w0").prepend(enableText);
 
 	//display the list of country list checkboxes
 	if (countriesList.length !== 0) {
@@ -108,7 +108,7 @@ Todo:
 			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
 
 			//go through each item li on the page and hide it if it's from an unwanted country
-			$("li.lvresult").each(function(index, obj) {
+			$("li.s-item").each(function(index, obj) {
 				//the "From: <country> text"
 				var locText = obj.textContent.trim();
 
@@ -206,7 +206,7 @@ Todo:
 	/* 
 	clicking on a filtered item will show/hide it
 	*/
-	$("#mainContent").on("click", ".ecf_expander", function() {
+	$(".srp-main").on("click", ".ecf_expander", function() {
 		$(this).next().slideToggle(550, "swing");
 	});
 

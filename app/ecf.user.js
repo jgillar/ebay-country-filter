@@ -92,7 +92,7 @@ Todo:
 	//insert the markup into the sidebar
 	//sometimes ebay's markup changes and I can't figure out why (layout looks identical)
 	//the two common sidebar containers are #w3-w0 and #LeftNavContainer
-	var sidebarContainer =  $("#LeftNavContainer").size() > 0 ? $("#LeftNavContainer") : $("#w3-w0");
+	var sidebarContainer =  $("#LeftNavContainer").length > 0 ? $("#LeftNavContainer") : $("#w3-w0");
 	sidebarContainer.prepend(enableText);
 
 	//display the list of country list checkboxes
@@ -111,7 +111,7 @@ Todo:
 			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
 
 			//go through each item li on the page and hide it if it's from an unwanted country
-			var itemList =  $("li.sresult").size() > 0 ? $("li.sresult") : $("li.s-item");
+			var itemList =  $("li.sresult").length > 0 ? $("li.sresult") : $("li.s-item");
 			itemList.each(function(index, obj) {
 				//the "From: <country> text"
 				var locText = obj.textContent.trim();
@@ -210,7 +210,7 @@ Todo:
 	/* 
 	clicking on a filtered item will show/hide it
 	*/
-	var resultContainer =  $("#Results").size() > 0 ? $("#Results") : $(".srp-main");
+	var resultContainer =  $("#Results").length > 0 ? $("#Results") : $(".srp-main");
 	resultContainer.on("click", ".ecf_expander", function() {
 		$(this).next().slideToggle(550, "swing");
 	});

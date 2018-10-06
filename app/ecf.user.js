@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ebay Country Filter
 // @namespace    https://greasyfork.org/
-// @version      0.4.31
+// @version      0.4.32
 // @description  Attempts to clear up unwanted items in your ebay search results
 // @author       Schabernack
 // @match        http://www.ebay.com/sch/*
@@ -90,7 +90,10 @@ Todo:
 	</div>`;
 
 	//insert the markup into the sidebar
-	$("#w3-w0").prepend(enableText);
+	//sometimes ebay's markup changes and I can't figure out why (layout looks identical)
+	//the two common sidebar containers are #w3-w0 and #LeftNavContainer
+	var sidebarContainer =  $("#LeftNavContainer").size() > 0 ? $("#LeftNavContainer") : $("#w3-w0");
+	sidebarContainer.prepend(enableText);
 
 	//display the list of country list checkboxes
 	if (countriesList.length !== 0) {
@@ -108,7 +111,8 @@ Todo:
 			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
 
 			//go through each item li on the page and hide it if it's from an unwanted country
-			$("li.s-item").each(function(index, obj) {
+			var itemList =  $("li.sresult").size() > 0 ? $("li.sresult") : $("li.s-item");
+			itemList.each(function(index, obj) {
 				//the "From: <country> text"
 				var locText = obj.textContent.trim();
 
@@ -206,7 +210,8 @@ Todo:
 	/* 
 	clicking on a filtered item will show/hide it
 	*/
-	$(".srp-main").on("click", ".ecf_expander", function() {
+	var resultContainer =  $("#Results").size() > 0 ? $("#Results") : $(".srp-main");
+	resultContainer.on("click", ".ecf_expander", function() {
 		$(this).next().slideToggle(550, "swing");
 	});
 

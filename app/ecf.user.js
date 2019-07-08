@@ -91,8 +91,8 @@ Todo:
 
 	//insert the markup into the sidebar
 	//sometimes ebay's markup changes and I can't figure out why (layout looks identical)
-	//the two common sidebar containers are #w3-w0 and #LeftNavContainer
-	var sidebarContainer =  $("#LeftNavContainer").length > 0 ? $("#LeftNavContainer") : $("#w3-w0");
+	//the two common sidebar containers are left rail and #LeftNavContainer
+	var sidebarContainer =  $("#LeftNavContainer").length > 0 ? $("#LeftNavContainer") : $(".srp-rail__left").eq(0);
 	sidebarContainer.prepend(enableText);
 
 	//display the list of country list checkboxes

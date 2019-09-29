@@ -16,29 +16,23 @@ Attempts to clear up unwanted items in your ebay search results
 by hiding items being sold from certain countries
 
 A work in progress
-
-Todo: 
-	Support for languages other than English? 
-	Force layout into list view if in gallery view?
-	Sooooooo much more
 */
 (function() {
 	//print various debugging info, slightly more convienient than using the console sometimes
-	var DEBUGON = true;
+	var DEBUGON = false;
 
 	var totalHidden = 0;
 
 	var countriesList = JSON.parse(localStorage.getItem("ecfCountriesList"));
 
 	//localstorage ecfEnabled is a STRING. Need to convert it to a boolean
-	var enabled = (localStorage.getItem("ecfEnabled") === "true");
+	var enabled = localStorage.getItem("ecfEnabled") === "true";
 
 	if (DEBUGON) {
 		console.log("\ninitial storage values");
 		console.log("ecfEnabled: ", enabled);
 		console.log("ecfCountriesList:", countriesList);
 	}
-
 
 	//if getItem returns null then this is the first time the script it being used
 	if (countriesList === null) {
@@ -92,7 +86,10 @@ Todo:
 	//insert the markup into the sidebar
 	//sometimes ebay's markup changes and I can't figure out why (layout looks identical)
 	//the two common sidebar containers are left rail and #LeftNavContainer
-	var sidebarContainer =  $("#LeftNavContainer").length > 0 ? $("#LeftNavContainer") : $(".srp-rail__left").eq(0);
+	var sidebarContainer =
+		$("#LeftNavContainer").length > 0
+			? $("#LeftNavContainer")
+			: $(".srp-rail__left").eq(0);
 	sidebarContainer.prepend(enableText);
 
 	//display the list of country list checkboxes
@@ -102,26 +99,32 @@ Todo:
 		});
 	}
 
-
 	if (enabled) {
 		var countriesListText = countriesList.join("|");
 
 		//if the list of countries is empty or the user only added empty strings as countries
 		if (countriesListText !== "") {
-			var regex = new RegExp("(?:From )(?:" + countriesList.join("|") + ")", "i");
+			var regex = new RegExp(
+				"(?:From )(?:" + countriesList.join("|") + ")",
+				"i"
+			);
 
 			//go through each item li on the page and hide it if it's from an unwanted country
-			var itemList =  $("li.sresult").length > 0 ? $("li.sresult") : $("li.s-item");
+			var itemList =
+				$("li.sresult").length > 0 ? $("li.sresult") : $("li.s-item");
 			itemList.each(function(index, obj) {
 				//the "From: <country> text"
 				var locText = obj.textContent.trim();
 
 				if (regex.test(locText)) {
 					//add wrapper and expand button
-					obj.innerHTML = "<div class='ecf_expander'>[+] Hidden - Click to expand</div><div class='ecf_wrapper'>" + obj.innerHTML + "</div>";
+					obj.innerHTML =
+						"<div class='ecf_expander'>[+] Hidden - Click to expand</div><div class='ecf_wrapper'>" +
+						obj.innerHTML +
+						"</div>";
 
 					$(this).addClass("ecf_hidden");
-					
+
 					totalHidden++;
 				}
 			});
@@ -175,7 +178,7 @@ Todo:
 		}
 
 		localStorage.setItem("ecfCountriesList", JSON.stringify(countriesList));
-	}
+	};
 
 	/* 
 	displays a given country in a checkbox on the page
@@ -210,9 +213,12 @@ Todo:
 	/* 
 	clicking on a filtered item will show/hide it
 	*/
-	var resultContainer =  $("#Results").length > 0 ? $("#Results") : $(".srp-main");
+	var resultContainer =
+		$("#Results").length > 0 ? $("#Results") : $(".srp-main");
 	resultContainer.on("click", ".ecf_expander", function() {
-		$(this).next().slideToggle(550, "swing");
+		$(this)
+			.next()
+			.slideToggle(550, "swing");
 	});
 
 	/*
@@ -240,7 +246,6 @@ Todo:
 		if (DEBUGON) {
 			console.log("ecfEnabled: " + localStorage.getItem("ecfEnabled"));
 		}
-
 	});
 
 	/*
@@ -263,16 +268,17 @@ Todo:
 
 		removeCountry(country);
 
-		$(this).parent().parent().remove(); //structure: <div><span><input /> ...
-
+		$(this)
+			.parent()
+			.parent()
+			.remove(); //structure: <div><span><input /> ...
 	});
 
 	/*
 	add a new stylesheet to the page and set it up with our styles
 	*/
-	function stylesheetInit(){
+	function stylesheetInit() {
 		var sheet = (function() {
-
 			var style = document.createElement("style");
 
 			//for webkit
@@ -283,12 +289,24 @@ Todo:
 			return style.sheet;
 		})();
 
-		sheet.insertRule(".ecf_wrapper { background: #333333; border: 5px solid brown; overflow: auto }", 0);
-		sheet.insertRule(".ecf_expander { cursor: pointer; height: 1.5em; line-height: 1.5em; color: #555; background-color: #fafafa;  }", 0);
-		sheet.insertRule(".ecf_hidden .ecf_wrapper { background: #cccccc; display: none; }", 0);
+		sheet.insertRule(
+			".ecf_wrapper { background: #333333; border: 5px solid brown; overflow: auto }",
+			0
+		);
+		sheet.insertRule(
+			".ecf_expander { cursor: pointer; height: 1.5em; line-height: 1.5em; color: #555; background-color: #fafafa;  }",
+			0
+		);
+		sheet.insertRule(
+			".ecf_hidden .ecf_wrapper { background: #cccccc; display: none; }",
+			0
+		);
 		sheet.insertRule("#ecf_controls { margin-bottom:5px; }", 0);
 		sheet.insertRule("#ecf_add { display:block; margin-top: 6px; }", 0);
-		sheet.insertRule("#ecf_apply { display:block; margin-top: 15px;color:#333333; }", 0);
+		sheet.insertRule(
+			"#ecf_apply { display:block; margin-top: 15px;color:#333333; }",
+			0
+		);
 		sheet.insertRule("#ecf_apply input { display:block; width:auto; }", 0);
 	}
 })();
